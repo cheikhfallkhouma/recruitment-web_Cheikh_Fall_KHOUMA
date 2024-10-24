@@ -1,6 +1,10 @@
 package com.proxym.libraryapp.member;
 
+import com.proxym.libraryapp.book.Book;
 import com.proxym.libraryapp.library.Library;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A member is a person who can borrow and return books to a {@link Library}
@@ -25,5 +29,24 @@ public abstract class Member {
 
     public void setWallet(float wallet) {
         this.wallet = wallet;
+    }
+
+    private List<Book> borrowedBooks = new ArrayList<>();
+    public void borrowBook(Book book) {
+        borrowedBooks.add(book);
+    }
+
+    public void returnBook(Book book) {
+        borrowedBooks.remove(book);
+    }
+
+    public boolean hasLateBooks() {
+        return borrowedBooks
+                .stream()
+                .anyMatch(book -> book.isLate(this));
+    }
+
+    public List<Book> getBorrowedBooks() {
+        return borrowedBooks;
     }
 }
